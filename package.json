@@ -4,13 +4,13 @@
   "description": "Backend API for Skillsparc",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node -r tsconfig-paths/register dist/index.js",
-    "dev": "nodemon -r tsconfig-paths/register src/index.ts",
-    "build": "tsc",
-    "lint": "eslint . --ext .ts",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "test": "jest"
-  },
+  "start": "node dist/index.js",
+  "dev": "nodemon -r tsconfig-paths/register src/index.ts",
+  "build": "tsc && tsc-alias",
+  "lint": "eslint . --ext .ts",
+  "format": "prettier --write \"src/**/*.ts\"",
+  "test": "jest"
+},
   "dependencies": {
     "@types/nodemailer": "^6.4.17",
     "@types/otp-generator": "^4.0.2",
@@ -51,6 +51,7 @@
     "prettier": "^3.1.1",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
   }

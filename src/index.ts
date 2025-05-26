@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import app from '@/app';
+import app from './app';
 import dbconnection from '@/config/database.config';
 import {  PORT } from '@/config/env.config';
 import { cloudinaryConnect } from '@/config/cloudinary.config';
