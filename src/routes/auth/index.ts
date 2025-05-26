@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import authRoutes from './auth.routes';
 import passwordRoutes from './password.routes';
-import profileRoutes from './profile.routes';
+// import profileRoutes from './profile.routes';
 
 const router = Router();
 
@@ -11,6 +11,6 @@ router.use('/password', passwordRoutes); // Password management routes ->forgot 
 
 
 
-router.use('/profile', profileRoutes); // Profile management routes ->update profile, delete profile
+// router.use('/profile', profileRoutes); // Profile management routes ->update profile, delete profile
 
 export default router; 

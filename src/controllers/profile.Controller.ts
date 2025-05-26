@@ -54,32 +54,32 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response) =>
 });
 
 // Update profile picture
-export const updateProfilePicture = asyncHandler(async (req: Request, res: Response) => {
-    const user = req.user;
-    if (!user) {
-        throw new ApiError(401, 'Unauthorized');
-    }
+// export const updateProfilePicture = asyncHandler(async (req: Request, res: Response) => {
+//     const user = req.user;
+//     if (!user) {
+//         throw new ApiError(401, 'Unauthorized');
+//     }
 
-    if (!req.file) {
-        throw new ApiError(400, 'No file uploaded');
-    }
+//     if (!req.file) {
+//         throw new ApiError(400, 'No file uploaded');
+//     }
 
-    // Upload to Cloudinary
-    const result = await uploadOnCloudinary(req.file.buffer);
+//     // Upload to Cloudinary
+//     const result = await uploadOnCloudinary(req.file.buffer);
 
-    // Update user profile with new picture URL
-    const updatedUser = await UserModel.findByIdAndUpdate(
-        user._id,
-        {
-            $set: {
-                'profile.avatar_url': result.secure_url
-            }
-        },
-        { new: true }
-    ).select('-password -__v');
+//     // Update user profile with new picture URL
+//     const updatedUser = await UserModel.findByIdAndUpdate(
+//         user._id,
+//         {
+//             $set: {
+//                 'profile.avatar_url': result.secure_url
+//             }
+//         },
+//         { new: true }
+//     ).select('-password -__v');
 
-    return new ApiResponse(200, updatedUser, 'Profile picture updated successfully').send(res);
-});
+//     return new ApiResponse(200, updatedUser, 'Profile picture updated successfully').send(res);
+// });
 
 // Delete profile picture
 export const deleteProfilePicture = asyncHandler(async (req: Request, res: Response) => {

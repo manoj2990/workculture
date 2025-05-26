@@ -26,38 +26,38 @@ export interface IPersonalInfo extends Document {
     updatedAt: Date;
 }
 
-// export interface IUser extends Document {
-//     _id: Schema.Types.ObjectId;
-//     name: string;
-//     email: string;
-//     password: string;
-//     accountType: accountType;
-//     jobTitle: string;
-//     createdBySuperAdmin?: Schema.Types.ObjectId;
-//     personalInfo: Schema.Types.ObjectId | (IPersonalInfo & { _id: Schema.Types.ObjectId });
-//     created_orgs?: Schema.Types.ObjectId[];
-//     adminLimits?: {
-//         maxOrganizations: number;
-//         maxCourses: number;
-//         maxDepartments: number;
-//         maxEmployees: number;
-//         maxEmployeesPerOrg: Array<{
-//             orgID: Schema.Types.ObjectId;
-//             limit: number;
-//         }>;
-//         // maxEmployeesPerDept: number;
-//         maxEmployeesPerCourse: number;
-//     };
-//     employeeData: {
-//         organization?: string;
-//         department?: string;
-//         enrolledCourses?: string[];
-//     };
-//     skills?: string[];
-//     accountStatus: 'active' | 'inactive' | 'blocked';
-//     createdAt: Date;
-//     updatedAt: Date;
-// }
+export interface IUser extends Document {
+    _id: Schema.Types.ObjectId;
+    name: string;
+    email: string;
+    password: string;
+    accountType: accountType;
+    jobTitle: string;
+    createdBySuperAdmin?: Schema.Types.ObjectId;
+    personalInfo: Schema.Types.ObjectId | (IPersonalInfo & { _id: Schema.Types.ObjectId });
+    created_orgs?: Schema.Types.ObjectId[];
+    adminLimits?: {
+        maxOrganizations: number;
+        maxCourses: number;
+        maxDepartments: number;
+        maxEmployees: number;
+        maxEmployeesPerOrg: Array<{
+            orgID: Schema.Types.ObjectId;
+            limit: number;
+        }>;
+        // maxEmployeesPerDept: number;
+        maxEmployeesPerCourse: number;
+    };
+    employeeData: {
+        organization?: string;
+        department?: string;
+        enrolledCourses?: string[];
+    };
+    skills?: string[];
+    accountStatus: 'active' | 'inactive' | 'blocked';
+    createdAt: Date;
+    updatedAt: Date;
+}
 
 export interface IOrganization extends Document {
     _id: Schema.Types.ObjectId;
