@@ -13,8 +13,8 @@ const API_VERSION = '/api/v1';
 const router = Router();
 
 // Health check route
-router.get('/health', (req, res) => {
-    res.status(200).json({ status: 'ok', message: 'Server is running' });
+router.get('/', (req, res) => {
+    res.status(200).json({ status: 'ok', message: 'Server is running , you can test other enpoints' });
 });
 
 
