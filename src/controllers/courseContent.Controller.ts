@@ -59,6 +59,7 @@ export const createTopic = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(500, 'Failed to create topic');
     }
 
+    console.log("topic data--->", topic)
   const updatedCourse = await CourseModel.findByIdAndUpdate(
     courseId,
     { $push: { topics: topic._id } },
@@ -70,9 +71,14 @@ export const createTopic = asyncHandler(async (req: Request, res: Response) => {
   }
   
   
-
+  const topiData={
+    id:topic._id,
+    courseId:topic.course,
+    title:topic.title,
+    description:topic.description
+  }
     return new ApiResponse(201, {
-        ...updatedCourse
+        ...topiData
     }, 'Topic created successfully').send(res);
     
 });
@@ -132,7 +138,7 @@ export const updateTopic = asyncHandler(async (req: Request, res: Response) => {
     //     throw new ApiError(500, 'Failed to update course');
     // }
 
-
+console.log("updated topic--->", topic)
     return new ApiResponse(200, {
         ...topic
     }, 'Topic updated successfully').send(res);
@@ -384,12 +390,16 @@ export const createSubtopic = asyncHandler(async (req: Request, res: Response) =
         uploaded_file_public_id = uploadResult?.publicIds || [];
         console.log("uploadResult-->", uploadResult);
   
+        let videoData;
         // Update validatedData based on contentType
         if (validatedData.contentType === 'file' && uploadResult?.uploadedFiles.files) {
           validatedData.files = uploadResult.uploadedFiles.files; // Replace with uploaded files
         } else if (validatedData.contentType === 'text' && uploadResult?.uploadedFiles.image) {
           validatedData.image = uploadResult.uploadedFiles.image; // Optionally store full image object
         }
+        else if (validatedData.contentType === 'video') {
+            validatedData.video = uploadResult?.uploadedFiles.video; // Optionally store full image object
+          }
       }
   
       if (validatedData.contentType === 'link') {
@@ -474,7 +484,25 @@ export const createSubtopic = asyncHandler(async (req: Request, res: Response) =
       if (!updatedTopic) {
         throw new ApiError(500, 'Failed to update topic');
       }
+
+      
   
+    //   const data = {
+    //     id: subtopic.topic,
+    //     title: subtopic.title,
+    //     description: subtopic.description,
+    //     contentType: subtopic.contentType,
+    //     text_content: subtopic.text_content,
+    //     image: subtopic.imageUrl,
+    //     video: subtopic.video,
+    //     videoUrl: subtopic.videoUrl,
+    //     filenames: subtopic.filenames,
+    //     links: subtopic.links,
+    //   },
+
+
+    const lastItem = updatedTopic.subtopics[updatedTopic.subtopics.length - 1];
+      console.log("lastItem---->",lastItem)
       return new ApiResponse(201, { ...updatedTopic }, 'Subtopic created successfully').send(res);
     } catch (error: any) {
       console.error('Error creating subtopic:', error);

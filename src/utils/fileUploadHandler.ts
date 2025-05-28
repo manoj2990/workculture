@@ -95,7 +95,7 @@ export async function uploadFiles(files:any[], contentType: string, videoName:st
             publicIds.push(result?.public_id);
             if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
             
-            const customname = filenames[index].name
+            const customname = filenames[index]?.name
 
             return {
               name: customname || file.originalname, // Use custom name if available
