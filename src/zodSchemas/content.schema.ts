@@ -101,7 +101,7 @@ export const subtopicSchema = z.object({
     text_content: z.string().min(1, "Text content is required").trim().optional(),
     image:z.string().min(1, "Image is required").trim().optional(),
     videoName: z.string().min(1, "Video name is required").trim().optional(),
-    videoUrl: z.string().url("Invalid video URL").trim().optional(),
+    videoUrl: z.string().url("Invalid video URL").optional(),
     video: videoSchema.optional(),
     files: z.array(fileSchema).optional(),
     links:  z.array(linkSchema).optional()

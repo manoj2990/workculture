@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { callLLM } from '@/utils/azureOpenAI';
 import { textToSpeech } from '@/utils/azureTTS';
+import courseModel from '@/models/course.model';
 
 // export const chatwithAI = async (req: Request, res: Response) => {
 //   try {
@@ -36,14 +37,17 @@ import { textToSpeech } from '@/utils/azureTTS';
 export const chatwithAI = async (req: Request, res: Response) => {
   try {
     console.log("entring into chatwithAI--->");
-    const { question } = req.body;
+    const { question,courseId } = req.body;
     if (!question) {
       return res.status(400).json({ error: 'Question is required' });
     }
     console.log("question--->", question);
-
+    console.log("courseId--->", courseId);
+    const course = await courseModel.findById(courseId)
+    console.log("course.ai_settings.persona_prompt--->",course?.ai_settings?.persona_prompt)
+    const persona_prompt = course?.ai_settings?.persona_prompt
     // Call Azure OpenAI to get text response
-    const textResponse = await callLLM(question);
+    const textResponse = await callLLM(question,persona_prompt);
     console.log("textResponse inside controller-->", textResponse);
 
     // Convert text to speech using Azure TTS and get base64 audio

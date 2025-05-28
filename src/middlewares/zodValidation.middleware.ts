@@ -261,6 +261,7 @@ function assignFilenamesToFiles(
     // Attach video file
     const videoFile = allFiles.find((file) => file.fieldname === "video");
     if (videoFile) {
+      console.log("videoFile--->",videoFile)
       req.body.video = videoFile;
     }
   
