@@ -123,7 +123,8 @@ const getAdminResponse = async (user: IUser) => {
                 description: 1,
                 numberOfEmployees: { $size: '$employees' },
                 numberOfDepartments: { $size: '$departments' },
-                numberOfCourses: { $size: '$courses' }
+                numberOfCourses: { $size: '$courses' },
+                departments: 1
             }
         }
     ]);

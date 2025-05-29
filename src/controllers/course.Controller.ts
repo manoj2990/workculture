@@ -1054,6 +1054,7 @@ export const getFullCourseDetails = asyncHandler(async (req: Request, res: Respo
 export const publishCourse = asyncHandler(async (req: Request, res: Response) => {
     const { courseId, linked_entities, status } = req.body;
     const adminId = req.user?._id;
+    const accessToken = req.user?.accessToken
 
     if (!courseId) {
         throw new ApiError(400, 'Course ID is required');
@@ -1185,13 +1186,16 @@ export const publishCourse = asyncHandler(async (req: Request, res: Response) =>
             ? 'Course published successfully' 
             : 'Course unpublished successfully';
 
+            const link = `http://localhost:8080/course/${courseId}/${accessToken}`
+            console.log("link--->",link)
         return new ApiResponse(200, {
             course: {
                 _id: updatedCourse._id,
                 title: updatedCourse.title,
                 status: updatedCourse.status,
                 linked_entities: updatedCourse.linked_entities
-            }
+            },
+            courseLink: link
         }, message).send(res);
 
     } catch (error) {

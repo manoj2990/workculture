@@ -31,6 +31,7 @@ export interface IUser extends Document {
     name: string;
     email: string;
     password: string;
+    accessToken?:string
     accountType: accountType;
     jobTitle: string;
     createdBySuperAdmin?: Schema.Types.ObjectId;

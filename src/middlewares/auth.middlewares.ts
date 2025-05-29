@@ -44,6 +44,7 @@ export const auth = asyncHandler(async (req: Request, res: Response, next: NextF
             
             // Set the user object in the request
             req.user = user;
+            req.user.accessToken = accessToken
             console.log("exiting from auth middleware--->")
             next();
         } catch (error) {
