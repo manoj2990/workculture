@@ -9,11 +9,139 @@ import { IAssessmentCreation } from '@/types';
 import OrganizationModel from '@/models/organization.model';
 import TopicModel from '@/models/topic.model';
 import SubtopicModel from '@/models/subtopic.model';
-import { startSession, Types } from 'mongoose';
+import mongoose, { ObjectId, startSession, Types } from 'mongoose';
 import { any } from 'zod';
 import { IQuestion, Iassessments } from '@/types';
 import { Document } from 'mongoose';
 import userAnswerModel from '@/models/userAnswer.model';
+import courseModel from '@/models/course.model';
+
+
+
+import { ICourse, ITopic, ISubtopic } from '../types'; // Adjust path to your types
+
+// Controller to handle saving a single assessment for a subtopic
+const saveCourseAssessments = async (req: Request, res: Response) => {
+  try {
+    const { courseId, topicId, subtopics } = req.body;
+console.log("entrin in save-CourseAssessments------>")
+    // Validate request body
+    if (!courseId || !topicId || !subtopics || !Array.isArray(subtopics) || subtopics.length !== 1) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid request body. Expected courseId, topicId, and a single subtopic.",
+      });
+    }
+
+    const subtopic = subtopics[0];
+    if (!subtopic.subtopicId || !subtopic.assessments || !Array.isArray(subtopic.assessments) || subtopic.assessments.length !== 1) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid subtopic data. Expected subtopicId and exactly one assessment.",
+      });
+    }
+
+    // Validate the single assessment
+    const assessmentData = subtopic.assessments[0];
+    if (!assessmentData.title || typeof assessmentData.title !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Assessment must have a title (string).",
+      });
+    }
+    if (assessmentData.description && typeof assessmentData.description !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Assessment description must be a string if provided.",
+      });
+    }
+
+    // Find the course and populate topics and subtopics
+    const course = await courseModel.findById(courseId)
+      .populate({
+        path: 'topics',
+        populate: {
+          path: 'subtopics',
+          model: 'Subtopic',
+        },
+      }) as ICourse;
+
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found.",
+      });
+    }
+
+    // Find the topic within the course
+    const topics = course.topics as ITopic[];
+    const topic = topics.find((t: any) => t._id.toString() === topicId);
+    if (!topic) {
+      return res.status(404).json({
+        success: false,
+        message: "Topic not found in the course.",
+      });
+    }
+
+    // Find the subtopic within the topic
+    const subtopicEntries = topic.subtopics as ISubtopic[];
+    const subtopicEntry = subtopicEntries.find((s: ISubtopic) => s._id.toString() === subtopic.subtopicId);
+    if (!subtopicEntry) {
+      return res.status(404).json({
+        success: false,
+        message: "Subtopic not found in the topic.",
+      });
+    }
+
+    // Find the subtopic document to update it
+    const Subtopic = mongoose.model('Subtopic');
+    const subtopicDoc = await Subtopic.findById(subtopic.subtopicId);
+    if (!subtopicDoc) {
+      return res.status(404).json({
+        success: false,
+        message: "Subtopic document not found.",
+      });
+    }
+
+    // Create a new Assessment document
+    const Assessment = mongoose.model('assessments');
+    const newAssessment = new Assessment({
+      subtopic: subtopic.subtopicId,
+      course: courseId,
+      assessments_title: assessmentData.title,
+      description: assessmentData.description,
+    });
+    await newAssessment.save();
+
+    // Push the ObjectId of the new Assessment into subtopicDoc.assessments
+    if (!subtopicDoc.assessments) {
+      subtopicDoc.assessments = [];
+    }
+    subtopicDoc.assessments.push(newAssessment._id);
+
+    // Save the updated subtopic
+    await subtopicDoc.save();
+
+    // Populate the assessments to return the full data
+    const updatedSubtopic = await Subtopic.findById(subtopic.subtopicId).populate('assessments');
+    const assessments = updatedSubtopic?.assessments || [];
+    
+    return res.status(200).json({
+      success: true,
+      message: "Assessment saved successfully.",
+      data: assessments,
+    });
+  } catch (error) {
+    console.error("Error saving assessment:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while saving assessment.",
+    });
+  }
+};
+
+export { saveCourseAssessments };
+
 
 
 
@@ -61,7 +189,7 @@ export const createCourseAssessments = asyncHandler(async (req: Request, res: Re
                 });
 
                 if (!subtopic) {
-                    throw new ApiError(404, `Subtopic ${subtopicData.order} not belongs to topic ${topicId}`);
+                    throw new ApiError(404, `Subtopic ${subtopicData?.order} not belongs to topic ${topicId}`);
                 }
 
                 let assessmentOrder = 1;

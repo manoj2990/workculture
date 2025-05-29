@@ -3,7 +3,8 @@ import {
     createCourseAssessments,
     deleteAssessment,
     getAssessmentWithUserAnswers,
-    updateAssessment
+    updateAssessment,
+    saveCourseAssessments
 } from '@/controllers/courseAssessment.Controller';
 import { auth } from '@/middlewares/auth.middlewares';
 import { hasaccountType, isAdmin, isEmployee } from '@/middlewares/role.middleware';
@@ -15,6 +16,13 @@ import {
 } from '@/zodSchemas/assessment.schema';
 
 const router = express.Router({ mergeParams: true });
+
+
+router.post('/save-CourseAssessments',  //testing done
+    auth, 
+    isAdmin, 
+    saveCourseAssessments
+);
 
 // Admin routes
 router.post('/course-assessments',  //testing done
