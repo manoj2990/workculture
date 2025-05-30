@@ -71,6 +71,7 @@ export interface IOrganization extends Document {
 }
 
 export interface IDepartment extends Document {
+    // admin:Schema.Types.ObjectId;
     _id: Schema.Types.ObjectId;
     name: string;
     description?: string;

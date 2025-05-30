@@ -3,6 +3,11 @@ import { IDepartment } from '@/types';
 import Organization from './organization.model';
 
 const departmentSchema = new Schema<IDepartment>({
+    // admin:{
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     required: true
+    // },
     name: {
         type: String,
         required: true,

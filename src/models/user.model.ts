@@ -52,18 +52,18 @@ const userSchema = new Schema<IUser>({
 
     //Review: please suggest is this is correct or not?
     adminLimits: { //limits set by the superadmin
-        maxOrganizations: { type: Number, default: 0 }  ,
-        maxCourses: { type: Number, default: 0 },
-        maxDepartments: { type: Number, default: 0 },
-        maxEmployees: { type: Number, default: 0 },
+        maxOrganizations: { type: Number, default: 500 }  ,
+        maxCourses: { type: Number, default:  500 },
+        maxDepartments: { type: Number, default:  500 },
+        maxEmployees: { type: Number, default:  500 },
         maxEmployeesPerOrg: [{
             orgID: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization', required: true },
-            limit: { type: Number, default: 0 }
+            limit: { type: Number, default:  500 }
           }],
-          maxEmployeesPerCourseDefault: { type: Number, default: 5 },
+          maxEmployeesPerCourseDefault: { type: Number, default:  500 },
           maxEmployeesPerCourse: [{
             courseID: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },
-            limit: { type: Number, default: 0 }
+            limit: { type: Number, default:  500 }
           }]
           
         // maxEmployeesPerOrg: { type: Number, default: 0 },
@@ -83,7 +83,7 @@ const userSchema = new Schema<IUser>({
     accountStatus: { 
         type: String,
         enum: ['active', 'inactive','blocked'],
-        default: 'inactive',
+        default: 'active',
         required() {
             return ['employee', 'individual', 'admin'].includes(this.accountType);
         },

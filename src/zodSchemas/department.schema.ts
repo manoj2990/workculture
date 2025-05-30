@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 // Base department schema
 export const departmentSchema = z.object({
-
     name: z.string().min(1, "Department name is required").trim(),
     organizationId: z.string().min(1, "Organization ID is required"),
     description: z.string().optional(),
-    courses: z.array(z.string()).optional()
+    courses: z.array(z.string()).optional(),
+    adminId:z.string()
 });
 
 // // Department creation schema

@@ -24,10 +24,10 @@ interface MemberStatus {
 
 // Create Organization
 export const createOrganization = asyncHandler(async (req: Request, res: Response) => {
-
-    const { name, organization_admin_email, logo_url, departments } = req.body;
+console.log("creating org------>")
+    const { name, organization_admin_email, logo_url, departments,adminId } = req.body;
     const validatedData={name, organization_admin_email, logo_url, departments}
-    const adminId = req.user?._id;
+    // const adminId = req.user?._id;
 
     if(!validatedData.name || !validatedData.organization_admin_email){
         throw new ApiError(400, 'Name and organization admin email are required');

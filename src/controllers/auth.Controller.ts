@@ -49,13 +49,13 @@ const getAdminLimits = (accountType: string) => {
 
     if (accountType === 'admin') {
         return {
-            maxOrganizations: 0,
-            maxCourses: 0,
-            maxDepartments: 0,
-            maxEmployees: 0,
+            maxOrganizations: 500,
+            maxCourses: 500,
+            maxDepartments: 500,
+            maxEmployees: 500,
             maxEmployeesPerOrg: [],
             // maxEmployeesPerDept: 0,
-            maxEmployeesPerCourseDefault: 5,
+            maxEmployeesPerCourseDefault: 500,
             maxEmployeesPerCourse: []
         };
     }
@@ -229,9 +229,13 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
          message: "Waiting for admin approval"
         }: '';
     
-  
+        const { accessToken, refreshToken } = generateTokens(responseData);
+
+        console.log("accessToken at sinup-->",accessToken)
+
       return new ApiResponse(201, {
         ...responseData,
+        accessToken,
         message: `${accountType} created successfully`,
       }).send(res);
   

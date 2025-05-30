@@ -149,16 +149,35 @@ export const getAllAdmins = asyncHandler(async (req: Request, res: Response) => 
     const admins = await UserModel.find({
         accountType: 'admin',
         createdBySuperAdmin: req.user?._id
+    }).populate({
+        path: 'created_orgs', 
+        select: '_id name',   
+        populate: {
+            path: 'departments', 
+            select: '_id name' ,
+            populate:{
+                path: 'courses',
+                select: '_id'
+            }
+        },
+        
     }).select('-password').lean();
 
     if(!admins){
         throw new ApiError(404, 'No admins found');
     }
 
-    return new ApiResponse(200, {
-        admins,
-        count: admins.length
-    }).send(res);
+const Alladmins = [...admins]
+console.log("sneding all admins ---->",Alladmins)
+
+
+return new ApiResponse(200, Alladmins).send(res);
+ 
+
+    // return new ApiResponse(200, {
+    //     ...Alladmins,
+    //     count: admins.length
+    // }).send(res);
 });
 
 

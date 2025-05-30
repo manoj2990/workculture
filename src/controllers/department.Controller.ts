@@ -25,7 +25,7 @@ interface MemberStatusMap {
 //add course to department
 export const addCourseToDepartment = asyncHandler(async (req: Request, res: Response) => {
    
-    const { courseId,departmentId } = req.body;
+    const { courseId,departmentId} = req.body;
 
     const adminId = req.user?._id;
 
@@ -65,10 +65,10 @@ export const addCourseToDepartment = asyncHandler(async (req: Request, res: Resp
 
 // Create Department
 export const createDepartment = asyncHandler(async (req: Request, res: Response) => {
-
+console.log("entring into department ------>")
     // const { Id: organizationId } = req.params;
-    const { name, description,organizationId } = req.body;
-    const adminId = req.user?._id;
+    const { name, description,organizationId ,adminId} = req.body;
+    // const adminId = req.user?._id;
 
     console.log("organizationId--->", organizationId)
     console.log("adminId--->", adminId)

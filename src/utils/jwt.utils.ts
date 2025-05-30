@@ -20,6 +20,7 @@ interface VerificationTokenPayload {
 
 // Generate Access Token
 export const generateAccessToken = (user: IUser): string => {
+    console.log("user genearteToken data--->",user)
     const payload: TokenPayload = {
         userId: user._id.toString(),
         email: user.email,
@@ -112,7 +113,7 @@ export const verifyRefreshToken = (token: string): Pick<TokenPayload, 'userId'> 
 
 
 // Generate both tokens
-export const generateTokens = (user: IUser) => {
+export const generateTokens = (user: any) => {
     return {
         accessToken: generateAccessToken(user),
         refreshToken: generateRefreshToken(user)

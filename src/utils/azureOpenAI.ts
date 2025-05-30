@@ -19,6 +19,7 @@ export const callLLM = async (question: string,persona_prompt:string | undefined
     console.log(`[LLM] Received question: ${question}`);
     // Log that we're starting the API call
     console.log(`[LLM] Calling Azure OpenAI API with model: ${modelName}, deployment: ${deployment}`);
+    //want to chan ge to dynamic
     const systemPrompt = "Your name is Jasy. You are a helpful, friendly, and concise AI assistant. Always provide short, clear, and simple answers to user questions. Speak in a polite and easy-to-understand tone. Stay on topic and avoid unnecessary details"
     const response = await client.chat.completions.create({
       messages: [

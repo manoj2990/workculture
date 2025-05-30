@@ -1,6 +1,6 @@
 import express from 'express';
 import { auth } from '@/middlewares/auth.middlewares';
-import { isAdmin } from '@/middlewares/role.middleware';
+import { hasaccountType, isAdmin } from '@/middlewares/role.middleware';
 import { validateSchema } from '@/middlewares/zodValidation.middleware';
 
 import { createOrganization, 
@@ -18,7 +18,8 @@ const router = express.Router();
 // Create organization --> done
 router.post('/create', 
     auth, 
-    isAdmin, 
+    // isAdmin, 
+    hasaccountType('admin', 'superadmin'),
     validateSchema(organizationSchema), 
     createOrganization
 );

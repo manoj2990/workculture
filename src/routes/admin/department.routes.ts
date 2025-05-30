@@ -8,7 +8,7 @@ import {
     addCourseToDepartment
 } from '@/controllers/department.Controller';
 import { auth } from '@/middlewares/auth.middlewares';
-import { isAdmin } from '@/middlewares/role.middleware';
+import { hasaccountType, isAdmin } from '@/middlewares/role.middleware';
 import { validateSchema } from '@/middlewares/zodValidation.middleware';
 
 import { departmentSchema, departmentUpdateSchema } from '@/zodSchemas/department.schema';
@@ -21,6 +21,7 @@ const router = express.Router({ mergeParams: true });
 router.post('/addCourseDepartment', 
     auth,
     isAdmin,
+    
     addCourseToDepartment
 );
 
@@ -28,7 +29,8 @@ router.post('/addCourseDepartment',
 //create department -->done
 router.post('/create', 
     auth, 
-    isAdmin, 
+    // isAdmin, 
+    hasaccountType('admin', 'superadmin'),
     validateSchema(departmentSchema), 
     createDepartment
 );

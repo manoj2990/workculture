@@ -231,7 +231,7 @@ function assignFilenamesToFiles(
     schema: AnyZodObject | ZodEffects<AnyZodObject>
   ) => async (req: Request, res: Response, next: NextFunction) => {
     console.log("validateSchema middleware called");
-  
+  console.log("reqcive rep body---->",req.body)
     // Parse JSON fields safely
     try {
       if (req.body.links) req.body.links = JSON.parse(req.body.links);
