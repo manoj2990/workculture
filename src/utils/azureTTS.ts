@@ -16,7 +16,7 @@ export const textToSpeech = async (text: string, options: ConvertToSpeechOptions
 
   try {
     const speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
-    speechConfig.speechSynthesisVoiceName = 'en-US-JessaNeural';
+    speechConfig.speechSynthesisVoiceName = 'en-IN-KunalNeural';
     speechConfig.speechSynthesisOutputFormat = sdk.SpeechSynthesisOutputFormat.Audio16Khz32KBitRateMonoMp3;
 
     const synthesizer = new sdk.SpeechSynthesizer(speechConfig);
