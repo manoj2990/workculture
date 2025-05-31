@@ -1186,7 +1186,7 @@ export const publishCourse = asyncHandler(async (req: Request, res: Response) =>
             ? 'Course published successfully' 
             : 'Course unpublished successfully';
 
-            const link = `https://digital-avatar-gray.vercel.app/course/${courseId}/${accessToken}`
+            const link = `https://digital-avatar-70zp7mxf7-manojmeena2990-gmailcoms-projects.vercel.app/course/${courseId}/${accessToken}`
            
         return new ApiResponse(200, {
             course: {
