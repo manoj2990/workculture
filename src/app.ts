@@ -14,7 +14,7 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: ['http://127.0.0.1:8080','http://127.0.0.1:5500','http://localhost:8080','http://192.168.223.1:8080','https://digital-avatar-gray.vercel.app'],
+    origin: ['http://127.0.0.1:8080','http://127.0.0.1:5500','http://localhost:8080','http://192.168.223.1:8080','https://digital-avatar-gray.vercel.app','https://digital-avatar-70zp7mxf7-manojmeena2990-gmailcoms-projects.vercel.app'],
     credentials: true,
   })
 );
