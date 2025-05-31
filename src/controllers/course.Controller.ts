@@ -357,7 +357,7 @@ export const getCourseForDigitalHuman = asyncHandler(async (req: Request, res: R
         .lean();
 
     if (!course) {
-        throw new ApiError(404, "Course not found or access denied");
+        throw new ApiError(404, "Course not found");
     }
 
     const formattedCourse = {
@@ -1186,8 +1186,8 @@ export const publishCourse = asyncHandler(async (req: Request, res: Response) =>
             ? 'Course published successfully' 
             : 'Course unpublished successfully';
 
-            const link = `http://localhost:8080/course/${courseId}/${accessToken}`
-            console.log("link--->",link)
+            const link = `https://digital-avatar-gray.vercel.app/course/${courseId}/${accessToken}`
+           
         return new ApiResponse(200, {
             course: {
                 _id: updatedCourse._id,
