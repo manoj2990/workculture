@@ -1,0 +1,45 @@
+# Environment and configuration files
+.env
+.env.local
+.env.*.local
+
+# Dependency directories
+node_modules/
+.vscode/
+.idea/
+
+# Build artifacts
+dist/
+build/
+*.exe
+*.dll
+*.so
+*.a
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+npm-debug.log*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Audio and upload directories
+public/audio/
+uploads/
+
+# Test coverage reports
+coverage/
+.nyc_output/
+
+# Debug files
+*.stackdump
+
+# Documentation
+/docs/
+
+# Azure TTS cache
+*.mp3
+*.wav
