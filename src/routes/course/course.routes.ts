@@ -4,7 +4,7 @@ import {
     // updateCourse, 
     getSingleCourseById, 
     deleteCourse,
-    // getAdminCourses ,
+    getAdminCourses ,
     editCourse,
     getFullCourseDetails,
     publishCourse,
@@ -95,11 +95,11 @@ router.post('/publish-course', //testing done need to include weights
 
 
 //get all courses for admin
-// router.get('/getAdmin-AllCourses', 
-//     auth, 
-//     isAdmin,
-//     getAdminCourses
-// );
+router.get('/getAdmin-AllCourses', 
+    auth, 
+    isAdmin,
+    getAdminCourses
+);
 
 
 

@@ -28,293 +28,7 @@ interface PopulatedCourse extends Omit<ICourse, 'enrolledEmployees' | '_id'> {
 
 
 //---------------------------------->course controller<--------------------------------
-
-// export const getCourseForDigitalHuman = asyncHandler(async (req: Request, res: Response) => {
-//     const { courseId } = req.body;
-//     const userId = req.user?._id;
-//     const userRole = req.user?.accountType;
-
-//     if (!userId) {
-//         throw new ApiError(401, 'Unauthorized access');
-//     }
-
-//     if (!courseId) {
-//         throw new ApiError(400, 'Course ID is required');
-//     }
-
-//     let courseQuery: any = { _id: courseId };
-
-//     if (userRole === 'admin') {
-//         const allowedOrgs = await OrganizationModel.find({ admin: userId }).distinct('_id');
-//         if (!allowedOrgs.length) {
-//             throw new ApiError(403, 'No organizations found for this admin');
-//         }
-//         courseQuery['linked_entities.organization'] = { $in: allowedOrgs };
-//     } else if (userRole === 'employee') {
-//         courseQuery['enrolledEmployees'] = userId;
-//     } else {
-//         throw new ApiError(403, 'Invalid user role');
-//     }
-
-//     const course = await CourseModel.findOne(courseQuery)
-//         .populate({
-//             path: 'topics',
-//             populate: {
-//                 path: 'subtopics',
-//                 populate: {
-//                     path: 'assessments',
-//                     select: '_id',
-//                 },
-//             },
-//         })
-//         .lean();
-
-//     if (!course) {
-//         throw new ApiError(404, 'Course not found or access denied');
-//     }
-
-//     const formattedCourse = {
-//         id: course._id.toString(),
-//         title: course.title,
-//         topics: course.topics.map((topic: any) => ({
-//             id: topic._id.toString(),
-//             title: topic.title,
-//             subTopics: topic.subtopics.map((subtopic: any) => {
-//                 const subTopic: any = {
-//                     id: subtopic._id.toString(),
-//                     title: subtopic.title,
-//                     type: subtopic.contentType === 'file' ? 'download' : subtopic.contentType,
-//                 };
-
-//                 // Map content based on contentType
-//                 if (subtopic.contentType === 'text') {
-//                     subTopic.content = subtopic.text_content;
-//                 } else if (subtopic.contentType === 'video') {
-//                     subTopic.videoUrl = subtopic.video?.url || '';
-//                 } else if (subtopic.contentType === 'file') {
-//                     subTopic.type = 'download';
-//                     subTopic.files = subtopic.files?.map((file: any) => ({
-//                         url: file.url || '',
-//                         name: file.name || '',
-//                         type: file.type || '',
-//                     })) || [];
-//                 } else if (subtopic.contentType === 'link') {
-//                     subTopic.type = 'link';
-//                     subTopic.links = subtopic.links?.map((link: any) => ({
-//                         title: link.title || '',
-//                         url: link.url || '',
-//                     })) || [];
-//                 }
-
-//                 // Map assessments as an array of assessmentIds
-//                 if (subtopic.assessments?.length) {
-//                     subTopic.assessmentIds = subtopic.assessments.map((assessment: any) => assessment._id.toString());
-//                 } else {
-//                     subTopic.assessmentIds = []; // Ensure it's an empty array if no assessments
-//                 }
-
-//                 return subTopic;
-//             }),
-//         })),
-//     };
-
-//     return new ApiResponse(200, formattedCourse, 'Course details fetched successfully').send(res);
-// });
-
-
-
-
-const dummyCourseData = {
-    success: true,
-    statusCode: 200,
-    status: "OK",
-    message: "Course details fetched successfully",
-    data: {
-      id: "dummy-course-123",
-      title: "Dummy Course for Testing",
-      topics: [
-        {
-          id: "topic-1",
-          title: "Topic 1: Basics of Web Development",
-          subTopics: [
-            {
-              id: "subtopic-1-1",
-              title: "What is HTML?",
-              type: "text",
-              content: "HTML stands for HyperText Markup Language. It is the standard markup language for creating web pages.",
-              
-              assessmentIds: [ {'id':"676557654756457755", 'title':'assessment-1'}, {'id':"6765576547565464", 'title':'assessment-2'}]
-            },
-            {
-              id: "subtopic-1-2",
-              title: "HTML Video Tutorial",
-              type: "video",
-              videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-              assessmentIds: []
-            }
-          ]
-        },
-        {
-          id: "topic-2",
-          title: "Topic 2: Styling with CSS",
-          subTopics: [
-            {
-              id: "subtopic-2-1",
-              title: "CSS Resources",
-              type: "download",
-              files: [
-                { url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", name: "CSS Guide", type: "pdf" }, // Changed fileName to name
-                { url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", name: "CSS Cheatsheet", type: "docx" },
-                { url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", name: "CSS Cheatsheet", type: "docx" },
-                { url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", name: "CSS Cheatsheet", type: "docx" }// Changed fileName to name
-              ],
-              assessmentIds: [ {'id':"676557654756fg7755", 'title':'assessment-1'}, {'id':"6765576547545", 'title':'assessment-2'}]
-            },
-            {
-              id: "subtopic-2-2",
-              title: "CSS Basics",
-              type: "text",
-              content: "CSS is used to style HTML elements. It controls the layout, colors, and fonts of a webpage.",
-              imageUrl: "https://www.cmu.edu/news/sites/default/files/styles/hero_full_width_desktop_2x/public/2024-06/0611-hd-enhancing-bci.png.webp?itok=SoT6klAD",
-              assessmentIds: []
-            }
-          ]
-        },
-        {
-          id: "topic-3",
-          title: "Topic 3: JavaScript Essentials",
-          subTopics: [
-            {
-              id: "subtopic-3-1",
-              title: "JavaScript Documentation Links",
-              type: "link",
-              links: [
-                { title: "MDN JavaScript Docs", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
-                { title: "W3Schools JavaScript Tutorial", url: "https://www.w3schools.com/js/" }
-              ],
-              "assessmentIds": [
-              { "id": "676557654756fg7755", "title": "CSS Fundamentals Quiz" },
-              { "id": "6765576547545", "title": "CSS Styling Assessment" }
-            ]
-            },
-            {
-              id: "subtopic-3-2",
-              title: "JavaScript Intro Video",
-              type: "video",
-              videoUrl: "https://example.com/videos/js-intro.mp4",
-              assessmentIds: []
-            }
-          ]
-        }
-      ]
-    }
-  };
-  
-
-
-// export const getCourseForDigitalHuman = asyncHandler(async (req: Request, res: Response) => {
-//     const { courseId } = req.body;
-//     const userId = req.user?._id;
-//     const userRole = req.user?.accountType;
-
-//     if (!userId) {
-//         throw new ApiError(401, "Unauthorized access");
-//     }
-
-//     if (!courseId) {
-//         throw new ApiError(400, "Course ID is required");
-//     }
-
-//     let courseQuery: any = { _id: courseId };
-
-//     if (userRole === "admin") {
-//         const allowedOrgs = await OrganizationModel.find({ admin: userId }).distinct("_id");
-//         if (!allowedOrgs.length) {
-//             throw new ApiError(403, "No organizations found for this admin");
-//         }
-//         courseQuery["linked_entities.organization"] = { $in: allowedOrgs };
-//     } else if (userRole === "employee") {
-//         courseQuery["enrolledEmployees"] = userId;
-//     } else {
-//         throw new ApiError(403, "Invalid user role");
-//     }
-
-//     const course = await CourseModel.findOne(courseQuery)
-//         .populate({
-//             path: "topics",
-//             populate: {
-//                 path: "subtopics",
-//                 populate: {
-//                     path: "assessments",
-//                     select: "_id title", // Include title in addition to _id
-//                 },
-//             },
-//         })
-//         .lean();
-
-//     if (!course) {
-//         throw new ApiError(404, "Course not found or access denied");
-//     }
-
-//     const formattedCourse = {
-//         id: course._id.toString(),
-//         title: course.title,
-//         topics: course.topics.map((topic: any) => ({
-//             id: topic._id.toString(),
-//             title: topic.title,
-//             subTopics: topic.subtopics.map((subtopic: any) => {
-//                 const subTopic: any = {
-//                     id: subtopic._id.toString(),
-//                     title: subtopic.title,
-//                     type: subtopic.contentType === "file" ? "download" : subtopic.contentType,
-//                 };
-
-//                 // Map content based on contentType
-//                 if (subtopic.contentType === "text") {
-//                     subTopic.content = subtopic.text_content;
-//                 } else if (subtopic.contentType === "video") {
-//                     subTopic.videoUrl = subtopic.video?.url || "";
-//                 } else if (subtopic.contentType === "file") {
-//                     subTopic.files = subtopic.files?.map((file: any) => ({
-//                         url: file.url || "",
-//                         name: file.name || "",
-//                         type: file.type || "",
-//                     })) || [];
-//                 } else if (subtopic.contentType === "link") {
-//                     subTopic.links = subtopic.links?.map((link: any) => ({
-//                         title: link.title || "",
-//                         url: link.url || "",
-//                     })) || [];
-//                 }
-
-//                 // Map assessments to the desired format: [{ id, title }]
-//                 subTopic.assessmentIds = subtopic.assessments?.length
-//                     ? subtopic.assessments.map((assessment: any) => ({
-//                           id: assessment._id.toString(),
-//                           title: assessment.title || `Assessment ${assessment._id}`,
-//                       }))
-//                     : [];
-
-//                 return subTopic;
-//             }),
-//         })),
-//     };
-
-//     return new ApiResponse(200, dummyCourseData, "Course details fetched successfully").send(res);
-// });
-
-
-
-
-
-
 // Create Course
-
-
-
-
-
-
 
 export const getCourseForDigitalHuman = asyncHandler(async (req: Request, res: Response) => {
     const { courseId } = req.body;
@@ -738,170 +452,10 @@ export const getSingleCourseById = asyncHandler(async (req: Request, res: Respon
 
 
 
-// export const getSingleCourseById = asyncHandler(async (req: Request, res: Response) => {
-//     const { courseId } = req.body;
-//     const adminId = req.user?._id;
-
-//     if (!adminId) {
-//         throw new ApiError(401, 'Unauthorized access');
-//     }
-
-//     if (!courseId) {
-//         throw new ApiError(400, 'Course ID is required');
-//     }
-
-//     // Get all organizations owned by admin
-//     const allowedOrgs = await OrganizationModel.find({ admin: adminId }).distinct('_id');
-
-//     // Find and populate course with all necessary data
-//     const course = await CourseModel.findOne({
-//         _id: courseId,
-//         'linked_entities.organization': { $in: allowedOrgs }
-//     })
-//     .populate('linked_entities.organization', 'name')
-//     .populate('linked_entities.departments', 'name')
-//     .populate({
-//         path: 'topics',
-//         populate: {
-//             path: 'subtopics',
-//             populate: [
-//                 {
-//                     path: 'assessments',
-//                     populate: {
-//                         path: 'questions',
-//                         select: 'questionText questionType options correctAnswers sampleAnswer instructions order'
-//                     }
-//                 }
-//             ]
-//         }
-//     })
-//     .populate('createdByAdmin', 'name email')
-//     .populate('enrolledEmployees', 'name email')
-//     .lean();
-
-//     if (!course) {
-//         throw new ApiError(404, 'Course not found or access denied');
-//     }
-
-
-//     const courseSummary = await CourseSummaryService.getCourseSummaryForAdmin(courseId);
-//     if (!courseSummary) {
-//         throw new ApiError(404, 'Course summary not found');
-//     }
-
-//     const getUserProgress = courseProgressModel.find({
-//         courseId:courseId,
-//         userId: {$in: enrolledEmployees}
-//     })
 
 
 
 
-
-//     const typedCourse = course as unknown as ICourse;
-
-//     // Format the response data
-//     const formattedResponse = {
-//         // Basic Info
-//         _id: typedCourse._id,
-//         title: typedCourse.title,
-//         description: typedCourse.description,
-//         duration: typedCourse.duration,
-//         skills: typedCourse.skills,
-//         image_url: typedCourse.image_url,
-//         instructors: typedCourse.instructors,
-//         status: typedCourse.status,
-//         createdAt: typedCourse.createdAt,
-//         updatedAt: typedCourse.updatedAt,
-//         courseSummary: courseSummary,
-
-//         // Organization & Department Info
-//         linked_entities: typedCourse.linked_entities.map(entity => ({
-//             organization: {
-//                 _id: entity.organization._id.toString(),
-//                 name: entity.organization.name
-//             },
-//             departments: entity.departments.map(dept => ({
-//                 _id: dept._id.toString(),
-//                 name: dept.name
-//             }))
-//         })),
-
-
-//         // Course Progress
-    
-
-//         // AI Settings
-//         ai_settings: typedCourse.ai_settings ? {
-//             persona_prompt: typedCourse.ai_settings.persona_prompt,
-//             ability_prompt: typedCourse.ai_settings.ability_prompt,
-//             rag_documents: typedCourse.ai_settings.rag_documents?.map(doc => ({
-//                 name: doc.name,
-//                 url: doc.url,
-//                 vectorized: doc.vectorized
-//             }))
-//         } : null,
-
-//         // Course Curriculum
-//         curriculum: typedCourse.topics.map(topic => ({
-//             _id: topic._id,
-//             title: topic.title,
-//             description: topic.description,
-//             order: topic.order,
-//             subtopics: topic.subtopics.map(subtopic => ({
-//                 _id: subtopic._id,
-//                 title: subtopic.title,
-//                 description: subtopic.description,
-//                 order: subtopic.order,
-//                 contentType: subtopic.contentType,
-//                 content: {
-//                     text: subtopic.text_content,
-//                     video: subtopic.video,
-//                     files: subtopic.files,
-//                     links: subtopic.links
-//                 },
-//                 assessments: subtopic.assessments?.map(assessment => ({
-//                     _id: assessment._id,
-//                     title: assessment.assessments_title,
-//                     order: assessment.order,
-//                     questions: assessment.questions.map(question => ({
-//                         _id: question._id,
-//                         questionText: question.questionText,
-//                         questionType: question.questionType,
-//                         options: question.options,
-//                         correctAnswers: question.correctAnswers,
-//                         sampleAnswer: question.sampleAnswer,
-//                         instructions: question.instructions,
-//                         order: question.order
-//                     }))
-//                 }))
-//             }))
-//         })),
-
-//         // Admin & Enrollment Info
-//         createdByAdmin: {
-//             _id: typedCourse.createdByAdmin._id,
-//             name: typedCourse.createdByAdmin.name,
-//             email: typedCourse.createdByAdmin.email
-//         },
-//         enrolledEmployees: typedCourse.enrolledEmployees.map(emp => ({
-//             _id: emp._id,
-//             name: emp.name,
-//             email: emp.email
-//         }))
-//     };
-
-//     return new ApiResponse(200, formattedResponse, 'Course details fetched successfully').send(res);
-// });
-
-
-
-
-
-
-
-//get course details for edit
-  
 export const getFullCourseDetails = asyncHandler(async (req: Request, res: Response) => {
     const { courseId } = req.body;
     const adminId = req.user?._id;
@@ -1287,38 +841,50 @@ export const publishCourse = asyncHandler(async (req: Request, res: Response) =>
 
 
 
-// // Get All Courses --> can be removed
-// export const getAdminCourses = asyncHandler(async (req: Request, res: Response) => {
-//   const adminId = req.user?._id;
+// // Get All Courses 
 
-//   if (!adminId) {
-//       throw new ApiError(401, 'Unauthorized access');
-//   }
+export const getAdminCourses = asyncHandler(async (req: Request, res: Response) => {
+  const adminId = req.user?._id;
+  const accessToken = req.user?.accessToken
 
-//   // Get all organizations created by the admin
-//   const orgIds = await OrganizationModel.find({ admin: adminId }).distinct('_id');
+  if (!adminId) {
+      throw new ApiError(401, 'Unauthorized access');
+  }
 
-//   const courses = await CourseModel.find({
-//       'linked_entities.organization': { $in: orgIds }
-//   })
-//   .populate({
-//       path: 'linked_entities.departments',
-//       select: 'name'
-//   })
-//   .populate({
-//       path: 'linked_entities.organization',
-//       select: 'name'
-//   })
-//   .populate({
-//       path: 'enrolledEmployees',
-//       select: 'name email'
-//   })
-//   .select('title description duration image_url status createdAt updatedAt linked_entities instructors enrolledEmployees');
+  // Get all organizations created by the admin
+  const orgIds = await OrganizationModel.find({ admin: adminId }).distinct('_id');
 
-//   return new ApiResponse(200, {
-//       courses
-//   }, 'Courses fetched successfully').send(res);
-// });
+  let courses = await CourseModel.find({
+      'linked_entities.organization': { $in: orgIds }
+  })
+  .populate({
+      path: 'linked_entities.departments',
+      select: 'name'
+  })
+  .populate({
+      path: 'linked_entities.organization',
+      select: 'name'
+  })
+  .populate({
+      path: 'enrolledEmployees',
+      select: 'name email'
+  })
+  .select('title description duration image_url status createdAt updatedAt linked_entities instructors enrolledEmployees');
+
+
+  courses = courses.map((course: any) => {
+        const courseObj = course.toObject();
+        if (course.status === 'published') {
+            courseObj.courseLink = `http://localhost:8080/course/${course._id}/${accessToken}`;
+        }
+        return courseObj;
+    }).sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    return new ApiResponse(200, {
+        courses
+    }, 'Courses fetched successfully').send(res);
+
+});
 
 
 
