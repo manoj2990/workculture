@@ -34,7 +34,7 @@ router.get('/get-all',
 
 
 // Get organization by ID -->DONE
-router.get('/get', 
+router.post('/get', 
     auth,
     isAdmin,
     getOrganizationById
