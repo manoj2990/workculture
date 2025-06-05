@@ -10,7 +10,7 @@ import { createOrganization,
      deleteOrganization } 
      from '@/controllers/organization.Controller';
 
-import {  organizationSchema } from '@/zodSchemas/organization.schema';
+import {  organizationSchema,updateOrganizationSchema } from '@/zodSchemas/organization.schema';
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ router.post('/create',
     auth, 
     // isAdmin, 
     hasaccountType('admin', 'superadmin'),
-    validateSchema(organizationSchema), 
+    validateSchema(updateOrganizationSchema), 
     createOrganization
 );
 
