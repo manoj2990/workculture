@@ -7,7 +7,7 @@ export const organizationSchema = z.object({
     organization_admin_email: z.string().email("Invalid admin email format"),
     logo_url: z.string().url("Invalid logo URL").optional(),
     departments: z.array(z.string()).optional(),
-    adminId:z.string()
+    adminId:z.string().optional()
 });
 
 // // Organization creation schema
