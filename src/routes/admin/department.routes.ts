@@ -46,7 +46,7 @@ router.post('/getall',
 
 
 //get specific department -->done
-router.get('/get', 
+router.post('/get', 
     auth, 
     isAdmin, 
     getDepartmentById
