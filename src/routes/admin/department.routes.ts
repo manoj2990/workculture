@@ -37,7 +37,7 @@ router.post('/create',
 
 
 //get all department under org --> peding (may be remove)
-router.get('/getall', 
+router.post('/getall', 
     auth, 
     isAdmin, 
     getAllDepartments
